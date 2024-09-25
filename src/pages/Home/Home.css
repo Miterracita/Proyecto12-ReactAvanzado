@@ -1,0 +1,40 @@
+.home-content {
+    background-color: var(--background-three);
+    padding: 50px 20%;
+    /* height: calc(100% - 50px); */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    padding-top: 50px;
+    text-align: center;
+}
+.btn {
+    background-color: var(--background-one);
+    cursor: pointer;
+    padding: 15px;
+    border: none;
+    color: white;
+    margin: 10px;
+}
+.ico-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+}
+.ico-home img {
+    width: 300px;
+}
+
+@media (max-width: 764px) {
+    .home-content {
+        height: auto;
+    }
+
+    .ico-home img {
+        width: 75%;
+    }
+}

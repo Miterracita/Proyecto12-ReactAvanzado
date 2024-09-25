@@ -1,0 +1,35 @@
+.medication-item {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--background-one);
+}
+.list-item {
+    background-color: var(--background-four);
+    width: 100%;
+    margin: 10px;
+    padding: 20px;
+}
+
+.list-item p {
+    text-align: left;
+    font-weight: 400;
+    font-size: 15px;
+}
+.list-item p span{
+    font-weight: 600;
+}
+
+.btn-small {
+    background-color: var(--background-five);
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid var(--background-one);
+    color: var(--background-one);
+    margin: 10px;
+}
+
+.btn-small:hover {
+    background-color: var(--background-two);
+    border: 1px solid var(--background-one);
+    color: var(--background-one);
+}

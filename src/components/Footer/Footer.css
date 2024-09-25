@@ -1,0 +1,13 @@
+Footer {
+    padding: 20px;
+    background-color: var(--background-two);
+    border-top: 1px solid white;
+    width: 100%;
+    height: var(--height-footer);
+}
+p {
+    font-weight: 600;
+    font-size: 12px;;
+    color: var(--background-rosa);
+    text-align: center;
+}

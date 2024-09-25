@@ -1,0 +1,27 @@
+.about-content {
+    padding: 50px 20%;
+    background-color: var(--background-four);
+    height: calc(100% - 50px);
+}
+.ico-about {
+    width: 25%;
+}
+
+h3 {
+    font-weight: 500;
+    margin-top: 40px;
+}
+
+.txt {
+    font-weight: 400;
+    margin: 20px 0;
+    text-align: left;
+    font-size: 14px;
+    line-height: 2;
+}
+
+@media (max-width: 764px) {
+    .about-content {
+        height: auto;
+    }
+}
