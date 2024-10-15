@@ -1,7 +1,7 @@
 .home-content {
     background-color: var(--background-three);
     padding: 50px 20%;
-    /* height: calc(100% - 50px); */
+    min-height: calc(100% - 50px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,6 +10,18 @@
 h1 {
     padding-top: 50px;
     text-align: center;
+}
+.btn-box {
+    display: flex;
+    gap: 20px;
+}
+.btn-secondary {
+    background-color: var(--background-five);
+    cursor: pointer;
+    padding: 15px;
+    border: none;
+    color: white;
+    margin: 10px;
 }
 .btn {
     background-color: var(--background-one);
@@ -31,7 +43,8 @@ h1 {
 
 @media (max-width: 764px) {
     .home-content {
-        height: auto;
+        min-height: 100vh;
+        padding: 10px;
     }
 
     .ico-home img {

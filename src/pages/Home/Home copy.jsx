@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import MedicationList from '../../components/MedicationList/MedicationList';
 import MedicationForm  from '../../components/MedicationForm/MedicationForm';
-import WeekCalendar  from '../../components/WeekCalendar/WeekCalendar';
 
 import './Home.css';
 
@@ -31,15 +30,20 @@ const useMedications = () => {
     setMedications(updatedMedications);
   };
 
-  return { medications, addMedication, removeMedication, editMedication };
+  const updateMedicationDate = (medication, newDate) => {
+    const updatedMedications = medications.map((med) =>
+      med.name === medication.title ? { ...med, startDate: newDate, endDate: newDate } : med
+    );
+    setMedications(updatedMedications);
+  };
+
+  return { medications, addMedication, removeMedication, editMedication, updateMedicationDate };
 };
 
 /*Component*/
 const Home = () => {
-  const { medications, addMedication, removeMedication, editMedication } = useMedications();
+  const { medications, addMedication, removeMedication, editMedication, updateMedicationDate } = useMedications();
   const [showForm, setShowForm] = useState(false);
-  const [showList, setShowList] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
 
 
@@ -57,24 +61,6 @@ const Home = () => {
     setEditingIndex(index);
     setShowForm(true);
   };
-  
-  const toggleShowList = () => {
-    if (!showList) {
-      setShowList(true);
-      setShowCalendar(false);
-    } else {
-      setShowList(false);
-    }
-  };
-
-  const toggleShowCalendar = () => {
-    if (!showCalendar) {
-      setShowCalendar(true);
-      setShowList(false);
-    } else {
-      setShowCalendar(false);
-    }
-  };
 
   return (
     <div className='home-content'>
@@ -82,27 +68,18 @@ const Home = () => {
       <div className='ico-home'>
         <img src="../../src/assets/medication.png" alt="medication-icon" />
       </div>
-
-      <div className='btn-box'>
-        <button className="btn" onClick={toggleShowList}>{showList ? 'Ocultar listado' : 'Ver listado'}</button>
-        <button className="btn" onClick={toggleShowCalendar}>{showCalendar ? 'Ocultar Calendario' : 'Ver Calendario'}</button>
-        <button className="btn-secondary" onClick={() => setShowForm(true)}>Add Medication</button>
-      </div>
+      <button className="btn" onClick={() => setShowForm(true)}>Add Medication</button>
 
       {showForm && 
         <MedicationForm addMedication={handleAddMedication} editingIndex={editingIndex} medications={medications} />
       }
 
-      {showList &&
-        <MedicationList 
-          medications={medications} 
-          removeMedication={removeMedication} 
-          editMedication={handleEditClick}
-        />
-      }
-      {showCalendar &&
-        <WeekCalendar medications={medications} onClose={() => setShowCalendar(false)} />
-      }
+      <MedicationList 
+        medications={medications} 
+        removeMedication={removeMedication} 
+        editMedication={handleEditClick}
+      />
+
     </div>
   );
 };

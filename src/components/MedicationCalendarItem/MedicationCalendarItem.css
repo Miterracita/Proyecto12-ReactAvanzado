@@ -1,0 +1,29 @@
+.calendar-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.list-item {
+    background-color: #dddddd;
+    width: 100%;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.list-item p {
+    text-align: left;
+    font-weight: 400;
+    font-size: 12px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.list-item p span{
+    font-weight: 600;
+}
+
+.list-item .name {
+    font-weight: 600;
+}
+.list-item .hours {
+    color: red;
+}
