@@ -1,79 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useReducer } from 'react';
+
 import MedicationList from '../../components/MedicationList/MedicationList';
 import MedicationForm  from '../../components/MedicationForm/MedicationForm';
 import WeekCalendar  from '../../components/WeekCalendar/WeekCalendar';
 
+import useMedications from '../../hooks/useMedications';
+
+import initialState from '../../reducers/initialState';
+import showReducer from '../../reducers/showReducer';
+
 import './Home.css';
-
-/*Custom hook*/
-const useMedications = () => {
-  const [medications, setMedications] = useState(() => {
-    // Leer la lista de medicamentos en el localStorage al iniciar el renderizado
-    const savedMedications = localStorage.getItem('medications');
-    return savedMedications ? JSON.parse(savedMedications) : [];
-  });
-
-  useEffect(() => {
-    // Guardar los cambios en el localstorgate cuando sufra cambios
-    localStorage.setItem('medications', JSON.stringify(medications));
-  }, [medications]);
-
-  const addMedication = (medication) => {
-    setMedications([...medications, medication]);
-  };
-
-  const removeMedication = (index) => {
-    setMedications(medications.filter((_, i) => i !== index));
-  };
-
-  const editMedication = (index, updatedMedication) => {
-    const updatedMedications = medications.map((med, i) => (i === index ? updatedMedication : med));
-    setMedications(updatedMedications);
-  };
-
-  return { medications, addMedication, removeMedication, editMedication };
-};
 
 /*Component*/
 const Home = () => {
   const { medications, addMedication, removeMedication, editMedication } = useMedications();
-  const [showForm, setShowForm] = useState(false);
-  const [showList, setShowList] = useState(false);
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+  const [state, dispatch] = useReducer(showReducer, initialState);
 
 
   const handleAddMedication = (medication) => {
-    if (editingIndex !== null) {
-      editMedication(editingIndex, medication);
-      setEditingIndex(null);
+    if (state.editingIndex !== null) {
+      editMedication(state.editingIndex, medication);
     } else {
       addMedication(medication);
     }
-    setShowForm(false);
+    dispatch({ type: 'HIDE_FORM' });
   };
 
   const handleEditClick = (index) => {
-    setEditingIndex(index);
-    setShowForm(true);
+    dispatch({ type: 'SHOW_FORM', payload: index });
   };
-  
+
   const toggleShowList = () => {
-    if (!showList) {
-      setShowList(true);
-      setShowCalendar(false);
-    } else {
-      setShowList(false);
-    }
+    dispatch({ type: 'TOGGLE_LIST' });
   };
 
   const toggleShowCalendar = () => {
-    if (!showCalendar) {
-      setShowCalendar(true);
-      setShowList(false);
-    } else {
-      setShowCalendar(false);
-    }
+    dispatch({ type: 'TOGGLE_CALENDAR' });
   };
 
   return (
@@ -84,24 +46,24 @@ const Home = () => {
       </div>
 
       <div className='btn-box'>
-        <button className="btn" onClick={toggleShowList}>{showList ? 'Ocultar listado' : 'Ver listado'}</button>
-        <button className="btn" onClick={toggleShowCalendar}>{showCalendar ? 'Ocultar Calendario' : 'Ver Calendario'}</button>
-        <button className="btn-secondary" onClick={() => setShowForm(true)}>Add Medication</button>
+        <button className="btn" onClick={toggleShowList}>{state.showList ? 'Ocultar listado' : 'Ver listado'}</button>
+        <button className="btn" onClick={toggleShowCalendar}>{state.showCalendar ? 'Ocultar Calendario' : 'Ver Calendario'}</button>
+        <button className="btn-secondary" onClick={() => dispatch({ type: 'SHOW_FORM', payload: null })}>Add Medication</button>
       </div>
 
-      {showForm && 
-        <MedicationForm addMedication={handleAddMedication} editingIndex={editingIndex} medications={medications} />
+      {state.showForm && 
+        <MedicationForm addMedication={handleAddMedication} editingIndex={state.editingIndex} medications={medications} />
       }
 
-      {showList &&
+      {state.showList &&
         <MedicationList 
           medications={medications} 
           removeMedication={removeMedication} 
           editMedication={handleEditClick}
         />
       }
-      {showCalendar &&
-        <WeekCalendar medications={medications} onClose={() => setShowCalendar(false)} />
+      {state.showCalendar &&
+        <WeekCalendar medications={medications} onClose={() => dispatch({ type: 'TOGGLE_CALENDAR' })} />
       }
     </div>
   );
